@@ -4,6 +4,7 @@ import { Link } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import {images} from '@/constants'
+import CustomButton from '@/components/CustomButton'
 
 const App = () => {
   return (
@@ -25,8 +26,12 @@ const App = () => {
             embark on a journey of endless possibilities with Sora.
           </Text>
 
+          <CustomButton title="Continue with Email" handlePress={() => {}} containStyles="w-full mt-7" />
         </View>
       </ScrollView>
+
+    <StatusBar backgroundColor='#161622' style='light' />
+
     </SafeAreaView>
   )
 }

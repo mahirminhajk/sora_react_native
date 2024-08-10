@@ -4,6 +4,8 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 
+import GlobalProvider  from '@/context/GlobalProvider';
+
 //* does not auto hide the splash screen, until the fonts are loaded
 SplashScreen.preventAutoHideAsync();
 
@@ -32,6 +34,7 @@ export default function RootLayout() {
   if(!fontsLoaded && !error) return null;
 
   return (
+    <GlobalProvider>
       <Stack>
         <Stack.Screen name="index" options={{headerShown: false}} />
         <Stack.Screen name="(auth)" options={{headerShown: false}} />
@@ -39,5 +42,6 @@ export default function RootLayout() {
         {/* <Stack.Screen name="/search/[query]" options={{headerShown: false}} /> */}
         <Stack.Screen name="+not-found" />
       </Stack>
+      </GlobalProvider>
   );
 }

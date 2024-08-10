@@ -1,5 +1,5 @@
 import SignIn from "@/app/(auth)/sign-in";
-import { Account, Avatars, Client, Databases, ID } from "react-native-appwrite";
+import { Account, Avatars, Client, Databases, ID, Query } from "react-native-appwrite";
 
 export const appwriteConfig = {
   endpoint: process.env.END_POINT,
@@ -65,6 +65,11 @@ export const createUser = async (
 
 export const signIn = async (email: string, password: string) => {
   try {
+    const currentsession = await account.listSessions();
+    if (currentsession.sessions.length > 0) {
+      await account.deleteSession('current');
+    }
+
     const session = await account.createEmailPasswordSession(
       email,
       password
@@ -74,4 +79,31 @@ export const signIn = async (email: string, password: string) => {
     console.log(error);
     throw new Error(error);
   }
+};
+
+
+export const getCurrentUser = async () => {
+    try {
+        const cureentAccont = await account.get();
+
+        if(!cureentAccont) {
+            throw new Error("Account not found");
+        }
+
+        const currentUser = await databases.listDocuments(
+            appwriteConfig.databaseId,
+            appwriteConfig.userCollectionId,
+            [Query.equal('accountId', cureentAccont.$id)]
+        );
+
+        if (!currentUser) {
+            throw new Error("User not found");
+        }
+
+        return currentUser.documents[0];
+    } catch (error) {
+        console.log(error);
+        throw new Error(error);
+        
+    }
 };

@@ -100,7 +100,9 @@ export const getCurrentUser = async () => {
             throw new Error("User not found");
         }
 
+        console.log("currentUser", currentUser.documents[0]);
         return currentUser.documents[0];
+        
     } catch (error) {
         console.log(error);
         throw new Error(error);

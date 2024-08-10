@@ -1,19 +1,32 @@
 import { getCurrentUser } from "@/lib/appwrite";
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 
-const GlobalContext = createContext({
-  isLoggedIn: false,
-  user: null,
-  loading: true,
-  setIsLoggedIn: (value) => {},
-  setUser: (value) => {},
-});
+interface IGlobalContextType {
+  isLoggedIn: boolean;
+  user: any;
+  loading: boolean;
+  setIsLoggedIn: (isLoggedIn: boolean) => void;
+  setUser: (user: any) => void;
+}
 
-export const useGlobalContext = () => useContext(GlobalContext);
+const GlobalContext = createContext<IGlobalContextType | undefined>(undefined);
 
-const GlobalProvider = ({ children }) => {
+export const useGlobalContext = () => {
+  const context = useContext(GlobalContext);
+  if (context === undefined) {
+    throw new Error("useGlobalContext must be used within a GlobalProvider");
+  }
+  return context;
+};
+
+
+interface GlobalProviderProps {
+  children: ReactNode;
+}
+
+const GlobalProvider = ({ children }: GlobalProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<any>(null); 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -53,3 +66,4 @@ const GlobalProvider = ({ children }) => {
 };
 
 export default GlobalProvider;
+

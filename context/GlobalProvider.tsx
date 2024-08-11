@@ -9,7 +9,7 @@ interface IGlobalContextType {
   setUser: (user: any) => void;
 }
 
-const GlobalContext = createContext<IGlobalContextType | undefined>(undefined);
+const GlobalContext = createContext(undefined);
 
 export const useGlobalContext = () => {
   const context = useContext(GlobalContext);

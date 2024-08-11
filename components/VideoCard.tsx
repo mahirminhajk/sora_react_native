@@ -1,4 +1,6 @@
+// @ts-nocheck
 import { icons } from "@/constants";
+import { ResizeMode, Video } from "expo-av";
 import { useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 
@@ -43,19 +45,39 @@ const VideoCard = ({
       </View>
 
       {play ? (
-        <Text>Playing</Text>
+        <Video
+          source={{
+            uri: "https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+          }}
+          // source={{ uri: video }}
+          className="w-full h-60 rounded-xl mt-3"
+          resizeMode={ResizeMode.COVER}
+          useNativeControls
+          shouldPlay
+          isMuted={false}
+          onPlaybackStatusUpdate={(status) => {
+            if (!status.isPlaying) {
+              setPlay(false);
+            }
+          }}
+          onError={(error) => console.log("Error my vide:::::",error)}
+        />
       ) : (
-        <TouchableOpacity onPress={() => setPlay(true)} activeOpacity={0.7} className="w-full h-60 relative justify-center items-center">
+        <TouchableOpacity
+          onPress={() => setPlay(true)}
+          activeOpacity={0.7}
+          className="w-full h-60 relative justify-center items-center"
+        >
           <Image
             source={{ uri: thumbnail }}
             className="w-full h-full rounded-xl mt-3"
             resizeMode="cover"
           />
-            <Image
-                source={icons.play}
-                className="w-12 h-12 absolute"
-                resizeMode="contain"
-            />
+          <Image
+            source={icons.play}
+            className="w-12 h-12 absolute"
+            resizeMode="contain"
+          />
         </TouchableOpacity>
       )}
     </View>

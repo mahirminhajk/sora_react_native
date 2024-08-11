@@ -1,4 +1,4 @@
-import SignIn from "@/app/(auth)/sign-in";
+// @ts-nocheck
 import { Account, Avatars, Client, Databases, ID, Query } from "react-native-appwrite";
 
 export const appwriteConfig = {
@@ -115,6 +115,20 @@ export const getAllPosts = async () => {
     const posts = await databases.listDocuments(
       appwriteConfig.databaseId,
       appwriteConfig.videoCollectionId
+    );
+
+    return posts.documents;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export const getLatestPosts = async () => {
+  try {
+    const posts = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.videoCollectionId,
+      [Query.orderDesc('$createdAt', Query.limit(7))]
     );
 
     return posts.documents;
